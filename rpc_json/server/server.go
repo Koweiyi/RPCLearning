@@ -23,9 +23,11 @@ func main() {
 	_ = rpc.RegisterName("HelloService", &HelloService{})
 
 	// 3.开启服务
-	conn, err := lis.Accept()
-	if err != nil {
-		panic("连接失败")
+	for {
+		conn, err := lis.Accept()
+		if err != nil {
+			panic("连接失败")
+		}
+		rpc.ServeCodec(jsonrpc.NewServerCodec(conn))
 	}
-	rpc.ServeCodec(jsonrpc.NewServerCodec(conn))
 }
